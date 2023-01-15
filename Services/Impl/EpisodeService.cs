@@ -11,23 +11,23 @@ namespace RickAndMortyAPI.Services.Impl
     public class EpisodeService : IEpisodeService
     {
         private const string GetEpisodeUrl = "https://rickandmortyapi.com/api/episode/?name={0}";
-        private IMemoryCache memoryCache;
+        private readonly IMemoryCache _memoryCache;
         
-        public EpisodeService(IMemoryCache _memoryCache)
+        public EpisodeService(IMemoryCache memoryCache)
         {
-            memoryCache = _memoryCache;
+            _memoryCache = memoryCache;
         }
         
         public async Task<Episode> GetEpisode(string name)
         {
-            if (memoryCache.TryGetValue(name, out var result))
+            if (_memoryCache.TryGetValue(name, out var result))
                 return result as Episode;
             
             var requestUrl = string.Format(GetEpisodeUrl, name);
             var response = await Get<EpisodeResponseModel>(requestUrl);
 
             var episode = response.Results.First();
-            memoryCache.Set(name, episode);
+            _memoryCache.Set(name, episode);
             
             return  episode;
         }

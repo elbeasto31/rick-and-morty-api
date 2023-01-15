@@ -13,13 +13,13 @@ namespace RickAndMortyAPI.Controllers
     [ResponseCache(CacheProfileName = "Default")]
     public class PersonController : ControllerBase
     {
-        private IPersonService personService;
-        private IEpisodeService episodeService;
+        private readonly IPersonService _personService;
+        private readonly IEpisodeService _episodeService;
         
-        public PersonController(IPersonService _personService, IEpisodeService _episodeService)
+        public PersonController(IPersonService personService, IEpisodeService episodeService)
         {
-            personService = _personService;
-            episodeService = _episodeService;
+            _personService = personService;
+            _episodeService = episodeService;
         }
         
         #region Actions
@@ -33,7 +33,7 @@ namespace RickAndMortyAPI.Controllers
 
             try
             {
-                var person = await personService.GetPerson(name);
+                var person = await _personService.GetPerson(name);
                 return Ok(person);
             }
             catch (FailedHttpRequestException ex)
@@ -51,8 +51,8 @@ namespace RickAndMortyAPI.Controllers
         {
             try
             {
-                var person = await personService.GetPerson(body.PersonName);
-                var episode = await episodeService.GetEpisode(body.EpisodeName);
+                var person = await _personService.GetPerson(body.PersonName);
+                var episode = await _episodeService.GetEpisode(body.EpisodeName);
 
                 return Ok(episode.Characters.Contains(person.Url));
             }
