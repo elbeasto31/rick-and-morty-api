@@ -1,0 +1,14 @@
+﻿version: '3'
+services:
+  rickandmorty:
+    build: .
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      ASPNETCORE_URLS: "https://+;http://+"
+      ASPNETCORE_HTTPS_PORT: "5001"
+      ASPNETCORE_ENVIRONMENT: "Development"
+    volumes:
+      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets 
+      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
