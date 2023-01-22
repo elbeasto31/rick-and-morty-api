@@ -27,12 +27,11 @@ namespace RickAndMortyAPI
             services.AddMemoryCache();
             services.AddControllers(options =>
             {
-                options.CacheProfiles.Add("Default",
-                    new()
-                    {
-                        VaryByQueryKeys = new[]{"*"},
-                        Duration = 30
-                    });
+                options.CacheProfiles.Add("Default", new()
+                {
+                    VaryByQueryKeys = new[] {"*"},
+                    Duration = 30
+                });
             });
         }
 
